@@ -25,7 +25,7 @@ def handle_invalid_usage(error):
 def sitemap():
     return generate_sitemap(app)
 
-@app.route('/members', methods=['POST'])
+@app.route('/member', methods=['POST'])
 def add_members():
 
     # this is how you can use the Family datastructure by calling its methods
@@ -33,18 +33,20 @@ def add_members():
     members= jackson_family.add_member(member)
     return jsonify (members), 200
 
-@app.route('/members/<int:id>', methods=['DELETE'])
+@app.route('/member/<int:id>', methods=['DELETE'])
 def delete_member(id):
 
     # this is how you can use the Family datastructure by calling its methods
-    members = jackson_family.delete_member(id)
-    return {"done": True}, 200
+    results = jackson_family.delete_member(id)
+    return {"done": results}, 200
 
-@app.route('/members/<int:id>', methods=['GET'])
+@app.route('/member/<int:id>', methods=['GET'])
 def get_member(id):
 
     # this is how you can use the Family datastructure by calling its methods
     member = jackson_family.get_member(id)
+    if member is None:
+        return "member does not exist", 404
     return jsonify(member), 200
 
 @app.route('/members', methods=['GET'])
